@@ -1,0 +1,14 @@
+package product
+
+import (
+	"e-commerce/internal/repo/stock"
+	"time"
+)
+
+type Product struct {
+	ID        uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Name      string
+	Stocks    []stock.Stock `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+}

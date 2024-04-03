@@ -6,8 +6,12 @@ import (
 	"log"
 	"os"
 
+	product_handler "e-commerce/internal/handler/rest/product"
 	user_handler "e-commerce/internal/handler/rest/user"
+	product_repo "e-commerce/internal/repo/product"
+	stock_repo "e-commerce/internal/repo/stock"
 	user_repo "e-commerce/internal/repo/user"
+	product_uc "e-commerce/internal/usecase/product"
 	user_uc "e-commerce/internal/usecase/user"
 
 	"github.com/gin-gonic/gin"
@@ -50,12 +54,16 @@ func main() {
 
 	// REPO INITIALIZATION
 	userRepo := user_repo.New(db)
+	productRepo := product_repo.New(db)
+	stockRepo := stock_repo.New(db)
 
 	// USECASE INITIALIZATION
 	userUsecase := user_uc.New(userRepo)
+	productUsecase := product_uc.New(productRepo, stockRepo)
 
 	// HANDLER INITIALIZATION
 	userHandler := user_handler.New(userUsecase)
+	productHandler := product_handler.New(productUsecase)
 
 	// SETUP ROUTER
 	router := gin.Default()
@@ -70,6 +78,11 @@ func main() {
 	router.POST("/users", userHandler.CreateUser)
 	router.PUT("/users/:id", userHandler.UpdateUser)
 	router.DELETE("/users/:id", userHandler.DeleteUser)
+
+	router.GET("/products", productHandler.GetListProducts)
+	router.GET("/products/:id", productHandler.GetProduct)
+	router.POST("/products", productHandler.CreateProduct)
+	router.DELETE("/products/:id", productHandler.DeleteProduct)
 
 	serverPort := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
 	log.Printf("server listening at %s", serverPort)
