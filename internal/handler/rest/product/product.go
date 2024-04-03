@@ -23,6 +23,7 @@ func (h Handler) GetListProducts(ctx *gin.Context) {
 		data = append(data, gin.H{
 			"id":                 product.ID,
 			"name":               product.Name,
+			"price":              product.Price,
 			"stock_availability": product.StockAvailability,
 			"created_at":         product.CreatedAt,
 			"updated_at":         product.UpdatedAt,
@@ -49,6 +50,7 @@ func (h Handler) GetProduct(ctx *gin.Context) {
 		"data": gin.H{
 			"id":                 product.ID,
 			"name":               product.Name,
+			"price":              product.Price,
 			"stock_availability": product.StockAvailability,
 			"created_at":         product.CreatedAt,
 			"updated_at":         product.UpdatedAt,
@@ -85,6 +87,7 @@ func (h Handler) CreateProduct(ctx *gin.Context) {
 		"data": gin.H{
 			"id":         product.ID,
 			"name":       product.Name,
+			"price":      product.Price,
 			"stocks":     product.Stocks,
 			"created_at": product.CreatedAt,
 			"updated_at": product.UpdatedAt,

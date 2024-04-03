@@ -3,6 +3,8 @@ package product
 import (
 	"e-commerce/internal/repo/stock"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 type Product struct {
@@ -10,5 +12,6 @@ type Product struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Name      string
-	Stocks    []stock.Stock `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Price     decimal.Decimal
+	Stocks    []stock.Stock `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }

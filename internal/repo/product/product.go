@@ -32,6 +32,7 @@ func (r Repository) GetListProducts(ctx context.Context) ([]entity.Product, erro
 			CreatedAt: product.CreatedAt,
 			UpdatedAt: product.UpdatedAt,
 			Name:      product.Name,
+			Price:     product.Price,
 			Stocks:    stocksEntity,
 		})
 	}
@@ -63,13 +64,15 @@ func (r Repository) GetProduct(ctx context.Context, id string) (entity.Product, 
 		CreatedAt: product.CreatedAt,
 		UpdatedAt: product.UpdatedAt,
 		Name:      product.Name,
+		Price:     product.Price,
 		Stocks:    stocksEntity,
 	}, nil
 }
 
 func (r Repository) CreateProduct(ctx context.Context, input entity.CreateProduct) (entity.Product, error) {
 	product := Product{
-		Name: input.Name,
+		Name:  input.Name,
+		Price: input.Price,
 	}
 
 	err := r.db.WithContext(ctx).Create(&product).Error
@@ -82,13 +85,12 @@ func (r Repository) CreateProduct(ctx context.Context, input entity.CreateProduc
 		CreatedAt: product.CreatedAt,
 		UpdatedAt: product.UpdatedAt,
 		Name:      product.Name,
+		Price:     product.Price,
 	}, nil
 }
 
 func (r Repository) DeleteProduct(ctx context.Context, id string) error {
-	var product Product
-
-	err := r.db.WithContext(ctx).Delete(&product, id).Error
+	err := r.db.WithContext(ctx).Delete(&Product{}, id).Error
 	if err != nil {
 		return err
 	}
