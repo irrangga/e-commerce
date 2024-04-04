@@ -9,13 +9,16 @@ import (
 	order_handler "e-commerce/internal/handler/rest/order"
 	product_handler "e-commerce/internal/handler/rest/product"
 	user_handler "e-commerce/internal/handler/rest/user"
+	warehouse_handler "e-commerce/internal/handler/rest/warehouse"
 	order_repo "e-commerce/internal/repo/order"
 	product_repo "e-commerce/internal/repo/product"
 	stock_repo "e-commerce/internal/repo/stock"
 	user_repo "e-commerce/internal/repo/user"
+	warehouse_repo "e-commerce/internal/repo/warehouse"
 	order_uc "e-commerce/internal/usecase/order"
 	product_uc "e-commerce/internal/usecase/product"
 	user_uc "e-commerce/internal/usecase/user"
+	warehouse_uc "e-commerce/internal/usecase/warehouse"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -60,16 +63,19 @@ func main() {
 	productRepo := product_repo.New(db)
 	stockRepo := stock_repo.New(db)
 	orderRepo := order_repo.New(db)
+	warehouseRepo := warehouse_repo.New(db)
 
 	// USECASE INITIALIZATION
 	userUsecase := user_uc.New(userRepo)
 	productUsecase := product_uc.New(productRepo, stockRepo)
 	orderUsecase := order_uc.New(orderRepo)
+	warehouseUsecase := warehouse_uc.New(warehouseRepo)
 
 	// HANDLER INITIALIZATION
 	userHandler := user_handler.New(userUsecase)
 	productHandler := product_handler.New(productUsecase)
 	orderHandler := order_handler.New(orderUsecase)
+	warehouseHandler := warehouse_handler.New(warehouseUsecase)
 
 	// SETUP ROUTER
 	router := gin.Default()
@@ -92,6 +98,11 @@ func main() {
 
 	router.POST("/orders", orderHandler.CreateOrder)
 	router.DELETE("/orders/:id", orderHandler.DeleteOrder)
+
+	router.GET("/warehouses/:id", warehouseHandler.GetWarehouse)
+	router.POST("/warehouses", warehouseHandler.CreateWarehouse)
+	router.DELETE("/warehouses/:id", warehouseHandler.DeleteWarehouse)
+	router.PATCH("/warehouses/:id/status", warehouseHandler.UpdateStatusWarehouse)
 
 	serverPort := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
 	log.Printf("server listening at %s", serverPort)
