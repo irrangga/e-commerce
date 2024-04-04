@@ -68,7 +68,7 @@ func main() {
 	// USECASE INITIALIZATION
 	userUsecase := user_uc.New(userRepo)
 	productUsecase := product_uc.New(productRepo, stockRepo)
-	orderUsecase := order_uc.New(orderRepo)
+	orderUsecase := order_uc.New(orderRepo, stockRepo)
 	warehouseUsecase := warehouse_uc.New(warehouseRepo)
 
 	// HANDLER INITIALIZATION
@@ -98,6 +98,7 @@ func main() {
 
 	router.POST("/orders", orderHandler.CreateOrder)
 	router.DELETE("/orders/:id", orderHandler.DeleteOrder)
+	router.PATCH("/orders/:id/checkout", orderHandler.CheckoutOrder)
 
 	router.GET("/warehouses/:id", warehouseHandler.GetWarehouse)
 	router.POST("/warehouses", warehouseHandler.CreateWarehouse)

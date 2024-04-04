@@ -59,3 +59,24 @@ func (h Handler) DeleteOrder(ctx *gin.Context) {
 		"data": nil,
 	})
 }
+
+func (h Handler) CheckoutOrder(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	order, err := h.uc.CheckoutOrder(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": gin.H{
+			"id":             order.ID,
+			"product_orders": order.ProductOrders,
+			"created_at":     order.CreatedAt,
+			"updated_at":     order.UpdatedAt,
+		},
+	})
+}

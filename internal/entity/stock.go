@@ -18,3 +18,8 @@ type CreateStock struct {
 	WarehouseID uint `json:"warehouse_id"`
 	Quantity    uint `json:"quantity"`
 }
+
+type UpdateStock struct {
+	ID       uint `json:"id"`
+	Quantity uint `json:"quantity"`
+}

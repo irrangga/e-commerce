@@ -8,6 +8,7 @@ import (
 type UcInterface interface {
 	CreateOrder(ctx context.Context, input entity.CreateOrder) (entity.Order, error)
 	DeleteOrder(ctx context.Context, id string) error
+	CheckoutOrder(ctx context.Context, id string) (entity.Order, error)
 }
 
 type Handler struct {

@@ -7,7 +7,9 @@ import (
 
 type RepoInterface interface {
 	CreateStock(ctx context.Context, input entity.CreateStock) (entity.Stock, error)
-	DeleteStockByProductId(ctx context.Context, productId string) error
+	DeleteStocksByProductId(ctx context.Context, productId string) error
+	UpdateStock(ctx context.Context, input entity.UpdateStock) (entity.Stock, error)
+	GetStocksByProductId(ctx context.Context, productId string) ([]entity.Stock, error)
 }
 
 type Usecase struct {

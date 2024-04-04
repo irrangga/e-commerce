@@ -3,6 +3,7 @@ package order
 import (
 	"context"
 	"e-commerce/internal/entity"
+	"e-commerce/internal/usecase/stock"
 )
 
 type RepoInterface interface {
@@ -14,11 +15,13 @@ type RepoInterface interface {
 }
 
 type Usecase struct {
-	repo RepoInterface
+	orderRepo RepoInterface
+	stockRepo stock.RepoInterface
 }
 
-func New(repo RepoInterface) Usecase {
+func New(orderRepo RepoInterface, stockRepo stock.RepoInterface) Usecase {
 	return Usecase{
-		repo: repo,
+		orderRepo: orderRepo,
+		stockRepo: stockRepo,
 	}
 }

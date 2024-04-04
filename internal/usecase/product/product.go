@@ -67,7 +67,7 @@ func (uc Usecase) DeleteProduct(ctx context.Context, id string) error {
 		return err
 	}
 
-	err = uc.stockRepo.DeleteStockByProductId(ctx, id)
+	err = uc.stockRepo.DeleteStocksByProductId(ctx, id)
 	if err != nil {
 		return err
 	}
